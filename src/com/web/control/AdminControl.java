@@ -106,7 +106,7 @@ public class AdminControl {
 		String name=req.getParameter("name");
 		String val=req.getParameter("val");
 		String tar=req.getParameter("tar");
-		System.out.println(name+":"+val+":"+tar);
+//		System.out.println(name+":"+val+":"+tar);
 		String info="success";
 		if(name.equals("clazz")){
 			if(service.updateClass(val,tar)){
@@ -137,12 +137,11 @@ public class AdminControl {
 		Map<String, String> map=new HashMap<>();
 		while(names.hasMoreElements()){
 			String name=names.nextElement();
-			System.out.println(name+"------"+req.getParameter(name));
+//			System.out.println(name+"------"+req.getParameter(name));
 			map.put(name, req.getParameter(name));
 		}
 		Picture pic = transToPicture(map);
 		String info="test";
-		System.out.println(pic);
 		if(service.updatePic(pic)){
 			info="success";
 		}else{
@@ -191,7 +190,6 @@ public class AdminControl {
 	public void getServerInfo(HttpServletRequest req,HttpServletResponse res){
 		Map<String, OnlineInfo> info = SysTool.getOnLineInfo();
 		List<Map<String, Object>> list = transToList(info);
-		System.out.println("test");
 		res.setCharacterEncoding("UTF-8");
 		try {
 			res.getWriter().write(JSON.toJSONString(list));
@@ -258,14 +256,35 @@ public class AdminControl {
 	
 	@RequestMapping("/update/UserandUserInfo")
 	public void updateUserAndUserInfo(HttpServletRequest req,HttpServletResponse res){
-		String message="test";
+		String message="";
+		DateFormat df=new SimpleDateFormat("yyyy-mm-dd");
+		User u=new User();
+		u.setId(Integer.parseInt(req.getParameter("userid")));
+		u.setUsername(req.getParameter("username"));
+		u.setLevel(Integer.parseInt(req.getParameter("userlevel")));
 		
-		Enumeration<String> names = req.getParameterNames();
-		while(names.hasMoreElements()){
-			String name=names.nextElement();
-			System.out.println(name+"-------------"+req.getParameter(name));
+		UserInfo info=new UserInfo();
+		info.setUsername(req.getParameter("name"));
+		info.setSex(req.getParameter("sex"));
+		info.setEmail(req.getParameter("email"));
+		info.setDepartment(req.getParameter("department"));
+		info.setSalary(Double.parseDouble(req.getParameter("salary")));
+		info.setId(Integer.parseInt(req.getParameter("infoId")));
+		try {
+			info.setHiredate(df.parse(req.getParameter("brithday")));
+			info.setHiredate(df.parse(req.getParameter("hiredate")));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		
+		try {
+			mapperUser.updateByPrimaryKeySelective(u);
+			mapperUserInfo.updateByPrimaryKeySelective(info);
+			message="success";
+		} catch (Exception e) {
+			message="error";
+			e.printStackTrace();
+		}
 		res.setCharacterEncoding("UTF-8");
 		try {
 			res.getWriter().write(message);

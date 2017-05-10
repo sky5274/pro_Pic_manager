@@ -235,7 +235,15 @@ function showManagePanel(){
 	self.siblings("div").css("display","none");
 	$.post("getUserInfo.do",{type:0,con:""},function(res){
 		showUserTab(res);
-	},"json")
+	},"json");
+	self.find("#search").mousedown(function(){
+		var t=$(this).siblings("select").attr("value");
+		var c=$(this).siblings("input").attr("value");
+		console.log(t+"--------"+c)
+		$.post("getUserInfo.do",{type:t,con:c},function(res){
+			showUserTab(res);
+		},"json");
+	})	
 }
 /**
  * 以列表的形式显示user
@@ -246,10 +254,8 @@ function showUserTab(res){
 	tab.html("");
 	$("<tr><th>id</th><th>username</th><th>name</th><th>level</th><th>sex</th></tr>").appendTo(tab)
 	$.each(res,function(i,data){
-		console.log(data)
 		var u=data.u;
 		var info=data.l==""?{}:data.l;
-		console.log(info.username+"   :"+info)
 		var tr=$("<tr data_u="+JSON.stringify(u)+" data_l="+JSON.stringify(info)+"><td>"+u.id+"</td><td>"+u.username+"</td><td>"+info.username+"</td><td class='mod'>"+u.level+"</td><td>"+info.sex+"</td></tr>")
 		tr.appendTo(tab);
 		$(tr).mousedown(function(e){
