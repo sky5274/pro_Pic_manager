@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.impl.PictureMapper">
+  <resultMap id="BaseResultMap" type="com.dao.entity.Picture">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="authorUrl" jdbcType="VARCHAR" property="authorurl" />
+    <result column="showUrl" jdbcType="VARCHAR" property="showurl" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="updateDa" jdbcType="TIMESTAMP" property="updateda" />
+    <result column="clazz" jdbcType="VARCHAR" property="clazz" />
+    <result column="theme" jdbcType="VARCHAR" property="theme" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, title, author, authorUrl, showUrl, url, updateDa, clazz, theme
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from picture
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectTheme" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from picture
+    where theme = #{theme,jdbcType=VARCHAR}
+  </select>
+   <select id="selectRangByTitle" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from picture
+    where title like #{title,jdbcType=VARCHAR}
+  </select>
+   <select id="selectRangByTheme" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from picture
+    where theme like #{theme,jdbcType=VARCHAR}
+  </select>
+  <select id="selectRangToByClass" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from picture
+    where clazz like #{clazz,jdbcType=VARCHAR}
+  </select>
+   <select id="selectRangToPageByTheme" parameterType="com.dao.entity.PageInfo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from picture
+    where theme like #{con,jdbcType=VARCHAR}
+    limit #{offset ,jdbcType=INTEGER},#{size ,jdbcType=INTEGER}
+  </select>
+   <select id="selectRangToPageByClass" parameterType="com.dao.entity.PageInfo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from picture
+    where theme like #{con,jdbcType=VARCHAR}
+    limit #{offset ,jdbcType=INTEGER},#{size ,jdbcType=INTEGER}
+  </select>
+  <select id="selectRangToPageByTitle" parameterType="com.dao.entity.PageInfo" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from picture
+    where theme like #{con,jdbcType=VARCHAR}
+    limit #{offset ,jdbcType=INTEGER},#{size ,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from picture
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dao.entity.Picture">
+    insert into picture (ID, title, author, 
+      authorUrl, showUrl, url, 
+      updateDa, clazz, theme
+      )
+    values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{authorurl,jdbcType=VARCHAR}, #{showurl,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{updateda,jdbcType=TIMESTAMP}, #{clazz,jdbcType=VARCHAR}, #{theme,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dao.entity.Picture">
+    insert into picture
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="authorurl != null">
+        authorUrl,
+      </if>
+      <if test="showurl != null">
+        showUrl,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="updateda != null">
+        updateDa,
+      </if>
+      <if test="clazz != null">
+        clazz,
+      </if>
+      <if test="theme != null">
+        theme,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="authorurl != null">
+        #{authorurl,jdbcType=VARCHAR},
+      </if>
+      <if test="showurl != null">
+        #{showurl,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="updateda != null">
+        #{updateda,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clazz != null">
+        #{clazz,jdbcType=VARCHAR},
+      </if>
+      <if test="theme != null">
+        #{theme,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dao.entity.Picture">
+    update picture
+    <set>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="authorurl != null">
+        authorUrl = #{authorurl,jdbcType=VARCHAR},
+      </if>
+      <if test="showurl != null">
+        showUrl = #{showurl,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="updateda != null">
+        updateDa = #{updateda,jdbcType=TIMESTAMP},
+      </if>
+      <if test="clazz != null">
+        clazz = #{clazz,jdbcType=VARCHAR},
+      </if>
+      <if test="theme != null">
+        theme = #{theme,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dao.entity.Picture">
+    update picture
+    set title = #{title,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      authorUrl = #{authorurl,jdbcType=VARCHAR},
+      showUrl = #{showurl,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      updateDa = #{updateda,jdbcType=TIMESTAMP},
+      clazz = #{clazz,jdbcType=VARCHAR},
+      theme = #{theme,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+   <update id="updateTheme" parameterType="java.util.Map">
+    update picture
+    set
+      theme = #{val}
+    where  theme = #{tar}
+  </update>
+   <update id="updateClass" parameterType="java.util.Map">
+    update picture
+    set
+      clazz = #{val,jdbcType=VARCHAR}
+    where  clazz = #{tar,jdbcType=VARCHAR}
+  </update>
+</mapper>

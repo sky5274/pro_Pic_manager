@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.impl.ClassInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.dao.entity.ClassInfo" >
+    <result column="sum" property="sum" jdbcType="BIGINT" />
+    <result column="clazz" property="clazz" jdbcType="VARCHAR" />
+  </resultMap>
+   <select id="selectInfo"  resultMap="BaseResultMap">
+    select 
+   	sum, clazz
+    from clazzinfo order by clazz
+  </select>
+  <insert id="insert" parameterType="com.dao.entity.ClassInfo" >
+    insert into clazzinfo (sum, clazz)
+    values (#{sum,jdbcType=BIGINT}, #{clazz,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dao.entity.ClassInfo" >
+    insert into clazzinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sum != null" >
+        sum,
+      </if>
+      <if test="clazz != null" >
+        clazz,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sum != null" >
+        #{sum,jdbcType=BIGINT},
+      </if>
+      <if test="clazz != null" >
+        #{clazz,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

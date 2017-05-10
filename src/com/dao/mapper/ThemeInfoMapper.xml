@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.impl.ThemeInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.dao.entity.ThemeInfo" >
+    <result column="sum" property="sum" jdbcType="BIGINT" />
+    <result column="theme" property="theme" jdbcType="VARCHAR" />
+    <result column="clazz" property="clazz" jdbcType="VARCHAR" />
+  </resultMap>
+   <select id="selectInfo"  resultMap="BaseResultMap">
+    select 
+   	sum, theme, clazz
+    from themeinfo order by clazz
+  </select>
+  <insert id="insert" parameterType="com.dao.entity.ThemeInfo" >
+    insert into themeinfo (sum, theme, clazz
+      )
+    values (#{sum,jdbcType=BIGINT}, #{theme,jdbcType=VARCHAR}, #{clazz,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dao.entity.ThemeInfo" >
+    insert into themeinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sum != null" >
+        sum,
+      </if>
+      <if test="theme != null" >
+        theme,
+      </if>
+      <if test="clazz != null" >
+        clazz,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sum != null" >
+        #{sum,jdbcType=BIGINT},
+      </if>
+      <if test="theme != null" >
+        #{theme,jdbcType=VARCHAR},
+      </if>
+      <if test="clazz != null" >
+        #{clazz,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

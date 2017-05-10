@@ -1,0 +1,39 @@
+*{
+	margin: 0; padding: 0;
+}
+li{list-style: none;}
+a{text-decoration: none;}
+
+.contain{
+	widows: 100%;
+}
+.title_top{
+	padding-top: 20px;
+	widows: 100%;
+	height: 40px;
+	background-color: #7FFFD4;
+}
+.lable{
+	float: left;
+	margin-left: 10%;
+}
+.searchbox{
+	float: left;
+	margin-left: 20%;
+}
+.hid{
+	display: none;
+}
+#useractioon{
+	float: right;
+	margin-right: 5%;
+}
+#useractioon a{
+	padding: 0 2px;
+}
+#useractioon img{
+	border: none;
+	widows: 2%;
+	height: 30%;
+	margin-right: 10px;
+}

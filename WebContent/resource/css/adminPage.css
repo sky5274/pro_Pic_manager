@@ -1,0 +1,162 @@
+*{margin: 0; padding: 0; text-decoration: none; list-style: none;}
+body{
+	width: 100%;
+}
+.hide{
+	display:none;
+}
+.contain{
+	width: 100%;
+	text-align: center;
+}
+.top h4{
+	float: left;
+	margin-left: 40%;
+	color: dimgrey;
+}
+.top{
+	width: 100%;
+	padding-top:20px ;
+	height: 40px;
+	background-color: burlywood;
+}
+.top .logo{
+	margin-right: 2%;
+}
+.main{
+	width: 100%;
+	height: 550px;
+}
+.left{
+	float: left;
+}
+.menu{
+	font-size: 80%;
+	width: 20%;
+	height: 100%;
+	background-color: #F0FFFF;
+}
+.menu ul.menu_item{
+	margin: 0 20%;
+	/*border: 1px solid burlywood;*/
+	margin-top: 40px;
+}
+.menu ul.menu_item ul .menuHead{
+	font-size: 120%;
+	padding-bottom:3%;
+	font-weight: bolder;
+}
+.menu ul.menu_item ul li{
+	display: none;
+	margin-top: 5px;
+	border-top:1px dashed burlywood ;
+}
+.menu ul.menu_item ul{
+	/*margin-bottom: 20px;*/
+	
+	border-bottom:1px solid burlywood ;
+}
+.right{
+	float: right;
+}
+.context{
+	width: 80%;
+	height: 100%;
+	/*background-color: cornflowerblue;*/
+}
+.context div{
+	margin-top:30px;
+	displsy:none;
+}
+#chartpictab{
+	width: 100%;
+}
+#chartpictab .selectTip select{
+	width: 10%;
+	margin-right: 2%;
+}
+#chartpictab .pictabMain{
+	width: 100%
+}
+.pictabMain .selectInfolab{
+	float: right;
+	width: 200px;
+}
+.selectInfolab #picinfo{
+	width: 100%;
+}
+.pictabMain .picTabList{
+	width:100%;
+	float: left;
+	margin-left: 10px;
+}
+.picTabList table {
+	width: 100%;
+	border: 1px solid blue;
+}
+.picTabList{
+	text-align: center;
+}
+.picTabList th{
+	font-size: 70%;
+}
+.picTabList td{
+	font-size: 50%;
+}
+.picTabList img{
+	width: 30px;
+	height: 20px;
+}
+.picTabList ul li{
+	float:left;
+	margin: 0 5px;
+}
+.picTabList ul li.page-active{
+	border: 1px solid red;
+	box-shadow: 2px 2px 4px blue;
+}
+.clazzAndTheme{
+	width: 100%
+}
+.modifyTab{
+	width: 100%;
+}
+.modifyTab select{
+	margin-right: 7%;
+}
+.modifyTab input {
+	margin-right: 2%;
+}
+.picInfoTab{
+	clear: left;
+	width: 100%;
+}
+.picInfoTab div{
+	float: left;
+	width: 50%
+}
+.picInfoTab button {
+	margin: 0 5%;
+}
+.picInfoTab .btn-div{
+	clear: left;
+	width: 300px;
+	margin-top: 50px;
+}
+
+.m_choose{
+	background-color: #7FFFD4;
+}
+#box td{
+	margin-right: 20px;
+	width: 100px
+}
+#box td input[type=text]{
+	width:70px
+}
+
+#managerFrame .showPanel table{
+	width: 400px;
+	margin: 0 auto;
+	
+}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- 配置数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="clone">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://localhost/hibernat?useSSL=yes"></property>
+		<property name="username" value="sky_"></property>
+		<property name="password" value="sky5274"></property>
+		<!-- 链接数据池启动时的初始值 -->
+		<property name="initialSize" value="3"></property>
+		<!-- 最大空闲值 -->
+		<property name="maxIdle" value="2"></property>
+		<!-- 最小空闲值 -->
+		<property name="minIdle" value="1"></property>
+	</bean>
+	<!-- 配置事物管理 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 配置回话工厂 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!--dataSource属性指定要用到的连接池 -->
+		<property name="dataSource" ref="dataSource" />
+		<!--configLocation属性指定mybatis的核心配置文件 -->
+		<!-- <property name="configLocation" value="classpath:config/MBTconfigtation.xml" 
+			/> -->
+		<!-- 所有配置的mapper文件 -->
+		<property name="mapperLocations" value="classpath*:com/dao/mapper/*.xml" />
+	</bean>
+	<!-- 配置mapper扫描 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.dao.impl" />
+	</bean>
+	<bean id="daoService" class="com.service.dao.DaoService">
+	</bean>
+	<bean id="daoUserService" class="com.service.dao.DaoUserService">
+	</bean>
+
+	<context:component-scan base-package="com.service.dao"></context:component-scan>
+	
+	<!-- 网络聊天端口扫描 
+	<context:component-scan base-package="com.web.contacttalk"></context:component-scan>
+	-->
+</beans>
