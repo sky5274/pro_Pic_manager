@@ -88,6 +88,7 @@ public class MyDoRegistInterceptor implements HandlerInterceptor{
 			usermapper.insert(user);
 			return true;
 		} catch (Exception e) {
+			usermapper.deleteByPrimaryKey(user.getId());  //删除用户
 			doReistError(req,res);
 			e.printStackTrace();
 			return false;

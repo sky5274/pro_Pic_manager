@@ -9,7 +9,7 @@ $(window).load(function(){
 		getInfoForTab();
 	})
 	$("#setPicInfo").mousedown(function(){
-		$("#setPicInfoPanel").find(".btn-div").css("margin-left",($("#setPicInfoPanel").width()-$(".btn-div").width())/2)
+//		$("#setPicInfoPanel").find(".btn-div").css("margin-left",($("#setPicInfoPanel").width()-$(".btn-div").width())/2)
 		setPicInfo();
 	})
 })
@@ -83,7 +83,6 @@ function getPicInfoByClass(){
 		})
 		option.xAxis[0].data=title;
 		option.series[0].data=con
-		console.log(option)
 		mychart.setOption(option)
 	},"json")
 }
@@ -361,7 +360,6 @@ function addInfoToSelect(res){
 		$(".picTabList").html(" ");
 		var f=false;
 		$.post("getNextContext.do",{data:con+theme.val(),offset:0},function(res){
-			console.log(0);
 			if(!f){
 				f=true;
 				addPicTab(res);
@@ -425,7 +423,6 @@ function addPicTab(res){
 	var self=$(".picTabList");
 	self.html(" ");
 	self.append($("<div class='ser-title'> 当前位置："+$("#clazz").val()+">"+$("#theme").val()+"</div>"));
-	console.log(1);
 
 	addInfoInToTab(res);
 	/*图片经过事件*/
@@ -505,12 +502,16 @@ function ChangeInfoInToTab(res){
 				"<td>"+data.class+"</td>" +
 				"<td>"+data.updateday+"</td>" +
 				"<td class='imgtd'><img src='"+data.url+"' alt='"+data.title+"'></img></td>" +
-				"<td><a href='"+data.authorurl+"'>作者原址</a></td> " +
-				"<td><a href='"+data.showurl+"'>图片原址</a></td>" +
+				"<td><a class='newopen' href='#' data_d='"+data.authorurl+"'>作者原址</a></td> " +
+				"<td><a class='newopen' href='#' data_d='"+data.showurl+"'>图片原址</a></td>" +
 		"</tr>");
 		tab.append(row);		
 	})
-//	self.append(tab)
+	self.find(".newopen").each(function(i,data){
+		$(data).mousedown(function(){
+			window.open($(this).attr("data_d"))
+		})
+	})
 	self.find("table").eq(1).remove()
 }
 /**
@@ -529,7 +530,7 @@ function addPageLead(){
 		var index=$(".page-active").find("a").text();
 		index=parseInt(index)
 		var con=$(".page-active").find("a").attr("data_c");
-		console.log("pre"+index);
+//		console.log("pre"+index);
 		index--;
 		if(index==0){
 			index=0;
@@ -545,7 +546,7 @@ function addPageLead(){
 		var index=$(".page-active").find("a").text();
 		index=parseInt(index)
 		var con=$(".page-active").find("a").attr("data_c");
-		console.log("next:"+index);
+//		console.log("next:"+index);
 		index++;
 		if(index==(sum-1)){
 			index=(sum-1);
@@ -577,21 +578,19 @@ function addPageLead(){
 			var con=$(this).find("a").attr("data_c");
 			$(".page-active").removeClass("page-active");
 			$(this).addClass("page-active")
-//			console.log(offs+"------"+con)
 			ajaxNextContxt(con,offs)
 		})
 	}
 	var u_w=u.width();
 	u.append(l_next);
 	pageLead.append(u);
-	console.log("ul_width:"+u_w)
+//	console.log("ul_width:"+u_w)
 	u.css("margin-left",(self.find("table").eq(0).width()-u_w)/3+"px")
 }
 
 function ajaxNextContxt(con,offs){
 	var f=false;
 	$.post("getNextContext.do",{data:con,offset:offs},function(res){
-		console.log(0);
 		if(!f){
 			f=true;
 			ChangeInfoInToTab(res)

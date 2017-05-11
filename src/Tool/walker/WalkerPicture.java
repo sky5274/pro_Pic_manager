@@ -13,6 +13,7 @@ public class WalkerPicture {
 		String path="http://www.tooopen.com/img/87.aspx";
 		String basePath="http://www.tooopen.com";
 		String context=toolWalker.readAddr(path);
+		System.out.println(context);
 		List<node> n=toolWalker.analysByClass(context, "cell type-list first-cell",0);
 		Map<String, Map<String, String>> menumap=toolWalker.getMenu(n.get(0));
 		log.info("now start to get the web is infomation  !!!");

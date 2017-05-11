@@ -8,6 +8,10 @@ $(window).load(function(){
 	$("#manageAction").mousedown(function(){
 		showManagePanel();
 	})
+	$("#AddUserAction").mousedown(function(){
+		showAddUserPanel();
+	})
+	viliteRegist();
 })
 
 
@@ -147,18 +151,17 @@ function showServerInfo(){
 	url.tar="webSocketPushMessage";
 
 	connectWebSocket(websocket,url,"get_server_info");
-	
+
 	$(".menu_item").find("a").each(function(i,data){
 		if($(data).attr("id")!="serviceReq"){
 			$(data).mouseup(function(){
 				if(websocket!=null){
 					websocket.close();
 					websocket=null;
-					console.log(1)
 				}
 			})
 		}
-		
+
 	})
 }
 
@@ -239,7 +242,7 @@ function showManagePanel(){
 	self.find("#search").mousedown(function(){
 		var t=$(this).siblings("select").attr("value");
 		var c=$(this).siblings("input").attr("value");
-		console.log(t+"--------"+c)
+		//console.log(t+"--------"+c)
 		$.post("getUserInfo.do",{type:t,con:c},function(res){
 			showUserTab(res);
 		},"json");
@@ -344,7 +347,7 @@ function showMenuItem(li,index){
  * 自定义菜单，修改用户等级
  * */
 function showMenuItemModifLevel(tr){
-	var maxLevel=8;
+	
 	var td=$(tr).find(".mod");
 	var level=td.text();
 	td.html("");
@@ -352,11 +355,11 @@ function showMenuItemModifLevel(tr){
 	con.focus(function(){
 		$("body").bind("keydown",function(e){
 			if(e.keyCode==13){
-				changLevel(con,level)
+				changLevel(con,level,tr)
 			}
 		});
 		$("body").bind("mousedown",function(e){
-				changLevel(con,level)
+			changLevel(con,level,tr)
 		});
 	});
 	con.blur(function(){
@@ -369,7 +372,9 @@ function showMenuItemModifLevel(tr){
 /**
  * 提交修改用户等级
  * */
-function changLevel(con,level){
+function changLevel(con,level,tr){
+	var maxLevel=8;
+	var td=$(tr).find(".mod");
 	if(con.attr("value")!=""&&parseInt(con.attr("value"))< maxLevel&&parseInt(con.attr("value"))!=parseInt(level)){
 		$.post("updateLevel.do",{id:tr.children("td").eq(0).text(),name:tr.children("td").eq(1).text(),level:parseInt(con.attr("value"))},function(res){
 			if(res=="success"){
@@ -388,10 +393,9 @@ function changLevel(con,level){
  * */
 function showMenuItemModifyALL(tr){
 	var u=tr.attr("data_u")
-	console.log(u)
+//	console.log(u)
 	u=JSON.parse(u)
 	var l=JSON.parse(tr.attr("data_l"))
-	console.log(l)
 	$("#tabMenu").remove();
 	closeTheMenu();
 	var box=$("<div id='box'></div>");
@@ -404,7 +408,7 @@ function showMenuItemModifyALL(tr){
 		"top":0,
 		"left":0
 	})
-	
+
 	box.appendTo($("body"));
 	var box_c=$("<div></div>");
 	var box_x=$("<div></div>");
@@ -417,22 +421,22 @@ function showMenuItemModifyALL(tr){
 	})
 	var tab=$("<table id='modTab'>" +
 			"<tr ><td  height='30px'>" +
-				"<table>" +
-				"<tr><th>userID: </th><td><label name='userid' value='"+u.id+"'>"+u.id+"</label></td><th>userNkname:</th><td><input type='text' name='username' value='"+u.username+"'/></td><th>userLevel:</th><td><input type='text' name='userlevel' value='"+u.level+"'/></td></tr>" +
-				"</table>" +
+			"<table>" +
+			"<tr><th>userID: </th><td><label name='userid' value='"+u.id+"'>"+u.id+"</label></td><th>userNkname:</th><td><input type='text' name='username' value='"+u.username+"'/></td><th>userLevel:</th><td><input type='text' name='userlevel' value='"+u.level+"'/></td></tr>" +
+			"</table>" +
 			"</td></tr>" +
 			"<tr ><td height='150px'>" +
-				"<table>" +
-				"<tr><th>姓名：</th><td><input type='text' name='name' value='"+l.username+"'/></td><th>性别：</th><td><input type='text' name='sex' value='"+l.sex+"'/></td></tr>" +
-				"<tr><th>邮箱：</th><td><input type='email' name='email' value='"+l.email+"'/></td><th>部门：</th><td><input type='text' name='department' value='"+l.department+"'/></td></tr>" +
-				"<tr><th>生日：</th><td><input type='date' name='brithday' value='"+l.brithday+"'/></td><th>入职日期：</th><td><input type='date' name='hiredate' value='"+l.hiredate+"'/></td></tr>" +
-				"<tr><th>薪水：</th><td><input type='number' name='salary' value='"+l.salary+"'/></td><th></th><td><input type='hidden' class='hide' name='infoId' value='"+l.id+"'/></td></tr>" +
-				"<tr><td></td><td colspan='2'><button id='tabsubmit'>提交</button><button id='return'>取消</button></td><td></td></tr>" +
-				"</table>" +
+			"<table>" +
+			"<tr><th>姓名：</th><td><input type='text' name='name' value='"+l.username+"'/></td><th>性别：</th><td><input type='text' name='sex' value='"+l.sex+"'/></td></tr>" +
+			"<tr><th>邮箱：</th><td><input type='email' name='email' value='"+l.email+"'/></td><th>部门：</th><td><input type='text' name='department' value='"+l.department+"'/></td></tr>" +
+			"<tr><th>生日：</th><td><input type='date' name='brithday' value='"+l.brithday+"'/></td><th>入职日期：</th><td><input type='date' name='hiredate' value='"+l.hiredate+"'/></td></tr>" +
+			"<tr><th>薪水：</th><td><input type='number' name='salary' value='"+l.salary+"'/></td><th></th><td><input type='hidden' class='hide' name='infoId' value='"+l.id+"'/></td></tr>" +
+			"<tr><td></td><td colspan='2'><button id='tabsubmit' class='btn_1'>提交</button><button id='return' class='btn_1'>取消</button></td><td></td></tr>" +
+			"</table>" +
 			"</td></tr>" +
-			"</table>");
+	"</table>");
 	box_x.css({
-		"width":"500px",
+		"width":"600px",
 		"height":"250px",
 		position:"absolute",
 		"border":"1px solid",
@@ -442,34 +446,41 @@ function showMenuItemModifyALL(tr){
 	})
 	tab.css({
 		"width":"100%",
+		"font-size":"120%",
 		"height":"60%",
 	})
+	tab.find("td").css("padding","5px 0px")
 	tab.appendTo(box_x);
 	$("#tabsubmit").bind("mousedown",function(){
 		if(confirm("是否确认提交")){
-			commitModify($("#box").find("td").children());
-			$("#box").remove();
-			openMenu();
+			var req_d="{";
+			var f=true;
+			$.each(datas,function(i,data){
+				if($(data).attr("value")==""){
+					f=false;
+					$(data).focus();
+				}
+				req_d+="\""+$(data).attr("name")+"\":\""+$(data).attr("value")+"\","
+			})
+			req_d=req_d.substring(0,req_d.length-1)+"}";
+			req_d=JSON.parse(req_d);
+			if(f){
+				commitModify(req_d)
+				$("#box").remove();
+				openMenu();
+			}
 		}
-		
+
 	})
 	$("#return").mousedown(function(){
-		console.log(1)
 		$("#box").remove();
 		openMenu()
 	})
 }
 
+
 function commitModify(datas){
-	var req_d="{";
-	$.each(datas,function(i,data){
-		console.log(data)
-		req_d+="\""+$(data).attr("name")+"\":\""+$(data).attr("value")+"\","
-	})
-	req_d=req_d.substring(0,req_d.length-1)+"}";
-	req_d=JSON.parse(req_d);
-	console.log(req_d)
-	$.post("update/UserandUserInfo.do",req_d,function(res){
+	$.post("update/UserandUserInfo.do",datas,function(res){
 		if(res=="success"){
 			alert("修改成功");
 		}else{
@@ -500,6 +511,126 @@ function openMenu(){
 		return true;
 	})
 }
-function getData(){
+
+/**
+ * 添加用户界面显示
+ * */
+function showAddUserPanel(){
+	var self=$(".context").find("#managerAddUser");
+	self.show();
+	self.siblings("div").css("display","none");
 	
+}
+
+function viliteRegist(){
+	var self=$(".context").find("#managerAddUser");
+	self.find("#logo").validate({
+		submitHandler : function(form) {  //验证通过后的执行方法
+			//当前的form通过ajax方式提交（用到jQuery.Form文件）
+			$(form).ajaxSubmit({
+//				dataType:"json",  //只能接受确定的消息
+				success:function( jsondata ){
+					console.log(jsondata)
+					if( jsondata =="success"){
+						alert("success");
+						$(form).reset()
+					}else{
+						alert("fail");
+					}
+				}
+			}); 
+
+		},
+		focusInvalid : true,   //验证提示时，鼠标光标指向提示的input
+		rules: {
+			nkname:{
+				required: true,
+				minlength: 5,
+			},
+			name: {
+				required: true,
+				minlength: 2
+			},
+			psw: {
+				required: true,
+				minlength: 5
+			},
+			repsw: {
+				required: true,
+				minlength: 5,
+				equalTo: "#psw"
+			},
+			email: {
+				required: true,
+				email: true
+			},
+			hiredate: "required",
+			salary:{
+				required: true,
+				number:true
+			}
+		},
+		messages: {
+			nkname: {
+				required: "请输入用户名",
+				minlength: "用户名必需由五个字母组成",
+			},
+			name: {
+				required: "请输入用户名",
+				minlength: "用户名必需由2个字母组成"
+			},
+			psw: {
+				required: "请输入密码",
+				minlength: "密码长度不能小于 5 个字母"
+			},
+			psw: {
+				required: "请输入密码",
+				minlength: "密码长度不能小于 5 个字母",
+				equalTo: "两次密码输入不一致"
+			},
+			email: "请输入一个正确的邮箱",
+			salary:  {
+				required: "请输入您的工资",
+			}
+		}
+	});
+	valiteName(self);
+}
+function valiteName(self) {
+	var i=0;
+	self.find("input[name=nkname]").focus(function(){
+		
+		$(this).blur(function() {
+			var se=$(this);
+			i++;
+			if(i>=1){
+				var val = $(this).attr("value");
+				jQuery.ajax({
+					type: "POST",
+					url: "valiteName.do",
+					async: false, //ajax异步
+					data: {
+						nkname: val
+					},
+					success: function(msg) {
+						if(msg.trim()=="same"){
+//							console.log(msg)
+							se.eq(0).attr("value","");
+							se.siblings("span").html("用户已存在")
+						}else{
+							se.siblings("span").html("")
+						}
+					},
+					error: function(){
+						if(val!=""){
+							console.log("网络不好！");
+							se.attr("value","")
+						}
+					}
+				});
+			}else if(i>3){
+				i=0;
+			}
+		})
+	})
 }

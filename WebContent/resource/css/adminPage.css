@@ -128,22 +128,41 @@ body{
 	margin-right: 2%;
 }
 .picInfoTab{
-	clear: left;
 	width: 100%;
 }
-.picInfoTab div{
+.picInfoTab table{
+	width: 80%;
+	margin: 0 auto;
+}
+.picInfoTab td div{
 	float: left;
-	width: 50%
+	margin-right: 5%;
+}
+.picInfoTab td{
+	text-align: left;
+}
+.picInfoTab div select{
+	margin-left:5px;
+	height: 30px;
+}
+.picInfoTab div input{
+	margin-left: 5px;
+	height: 30px;
 }
 .picInfoTab button {
-	margin: 0 5%;
+	
+	margin:0 7%;
 }
 .picInfoTab .btn-div{
 	clear: left;
-	width: 300px;
-	margin-top: 50px;
+	width: 200px;
+	margin-top:20px;
+	margin-left:100px;
+	text-align: center;
 }
-
+.btn-div button{
+	margin: 0 20px;
+}
 .m_choose{
 	background-color: #7FFFD4;
 }
@@ -154,9 +173,32 @@ body{
 #box td input[type=text]{
 	width:70px
 }
+.btn_1{
+	margin: 20px 25px;
+	font-size:13px;
+	padding: 5px 20px;
+}
 
 #managerFrame .showPanel table{
 	width: 400px;
 	margin: 0 auto;
+	
+}
+#managerAddUser .registerMain{
+	margin-left:auto;
+	margin-right:auto;
+	margin-top:20px;
+	width: 60%;
+}
+.registerMain table td{
+	height: 30px;
+	width: 70px;
+	text-align: left;
+}
+.registerMain table{
+	width: 100%;
+}
+.registerMain table .con{
+	width: 80%;
 	
 }

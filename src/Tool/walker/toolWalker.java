@@ -20,6 +20,9 @@ import com.dao.entity.Picture;
 
 public class toolWalker {
 
+	/**
+	 * 根据给定的url路径读取页面的源代码
+	 * */
 	@SuppressWarnings("finally")
 	public static  String readAddr(String url){
 		StringBuffer context=new StringBuffer();
@@ -43,7 +46,11 @@ public class toolWalker {
 		
 	}
 
-
+	/**
+	 * @param context    页面的源代码
+	 * @param  tar      所要提取信息的所在元素标签的关键字，如：class，id，元素名
+	 * @return picture集合
+	 * */
 	public static List<Picture> walkerPicture(String context,String tar){
 		List<node> n=analysByClass(context, tar,0);
 		List<Picture> pic_list=new ArrayList<>();
@@ -57,6 +64,10 @@ public class toolWalker {
 		return pic_list;
 	}
 	
+	/**
+	 * @param node 节点
+	 * @return  map集合
+	 * */
 	public static Map<String, Map<String, String>> getMenu(node node){
 		List<node> list=SelectNodeInfo.findByElement(node, "li");
 		Map<String, Map<String, String>> map=new HashMap<>();
@@ -81,7 +92,11 @@ public class toolWalker {
 		}
 		return map;
 	}
-
+	
+	/**
+	 * @param String  截取的字节
+	 * @return  封装成picture对象
+	 * */
 	private static Picture transToPicture(String context){
 		int href_end=context.indexOf("target=\"_blank\"");
 		int hrer_s=context.indexOf("href=\"http://www.tooopen.com");
@@ -134,12 +149,25 @@ public class toolWalker {
 		}
 		return list;
 	}
+	/**
+	 * 分析字符串，以元素名将其转化成node节点
+	 * @param ele  :节点元素名
+	 * @param ele_s  ：节点起始位置
+	 * @param context  ：字符串
+	 * @return node
+	 * */
 	private static node analysElement(String context, String ele, int ele_s){
 		int start=context.indexOf(ele,ele_s);
 		int end=getEndIndex(context, ele, start, ele_s);
 		return transToNodes(context.substring(start-1,end+2));
 	}
-
+	/**
+	 * 分析字符串，以元素的class将其转化成node节点
+	 * @param classes  :节点元素的class属性
+	 * @param ele_start  ：节点起始位置
+	 * @param context  ：字符串
+	 * @return node
+	 * */
 	private static node analysClass(String context, String classes,int ele_start){
 		int start=context.indexOf(classes,ele_start);
 		if(start>0){
@@ -153,6 +181,13 @@ public class toolWalker {
 		}
 		return null;
 	}
+	/**
+	 * 分析字符串，以元素的class将其转化成node节点
+	 * @param classes  :节点元素的class属性
+	 * @param ele_start  ：节点起始位置
+	 * @param context  ：字符串
+	 * @return node
+	 * */
 	public static List<node> analysByClass(String context, String classes,int ele_start){
 		List<node> list=new ArrayList<node>();
 		node n;
@@ -277,7 +312,9 @@ public class toolWalker {
 
 	}
 
-
+	/**
+	 * 将元素的属性转化为集合
+	 * */
 	private static List<String> transAttrToLIst(String[] cs){
 		List<String> list=new ArrayList<String>();
 		if(cs.length>2){
@@ -294,7 +331,9 @@ public class toolWalker {
 		}
 		return list;
 	}
-
+	/**
+	 * 获取网页菜单menu的request访问路径的规则
+	 * */
 	public static Map<String, String> getRule(String context,String tar,String action){
 		List<node> n=analysByClass(context, tar,0);
 		String con=null;

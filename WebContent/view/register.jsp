@@ -143,7 +143,7 @@
 				$("input[name='nkname']").blur(function() {
 					var self=$(this);
 					i++;
-					if(i>1){
+					if(i>=1){
 						var val = $(this).attr("value");
 						console.log(val)
 						jQuery.ajax({
@@ -154,7 +154,8 @@
 								nkname: val
 							},
 							success: function(msg) {
-								if(msg=="same"){
+								console.log(msg)
+								if(msg.rim()=="same"){
 									self.attr("value","")
 								}
 							},

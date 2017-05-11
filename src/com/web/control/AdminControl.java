@@ -1,6 +1,8 @@
 package com.web.control;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +16,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +33,7 @@ import com.dao.impl.UserMapper;
 import com.model.OnlineInfo;
 import com.service.dao.DaoService;
 
+import Tool.ServiceTool;
 import Tool.SysTool;
 
 @Controller
@@ -106,7 +110,7 @@ public class AdminControl {
 		String name=req.getParameter("name");
 		String val=req.getParameter("val");
 		String tar=req.getParameter("tar");
-//		System.out.println(name+":"+val+":"+tar);
+		//System.out.println(name+":"+val+":"+tar);
 		String info="success";
 		if(name.equals("clazz")){
 			if(service.updateClass(val,tar)){
@@ -137,7 +141,7 @@ public class AdminControl {
 		Map<String, String> map=new HashMap<>();
 		while(names.hasMoreElements()){
 			String name=names.nextElement();
-//			System.out.println(name+"------"+req.getParameter(name));
+			//System.out.println(name+"------"+req.getParameter(name));
 			map.put(name, req.getParameter(name));
 		}
 		Picture pic = transToPicture(map);
@@ -222,7 +226,7 @@ public class AdminControl {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@RequestMapping("/updateLevel")
 	public void upateUserLevel(HttpServletRequest req,HttpServletResponse res){
 		String id=req.getParameter("id");
@@ -245,7 +249,7 @@ public class AdminControl {
 		} catch (Exception e) {
 			message="args_error";
 		}
-		
+
 		res.setCharacterEncoding("UTF-8");
 		try {
 			res.getWriter().write(JSON.toJSONString(message));
@@ -253,7 +257,7 @@ public class AdminControl {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@RequestMapping("/update/UserandUserInfo")
 	public void updateUserAndUserInfo(HttpServletRequest req,HttpServletResponse res){
 		String message="";
@@ -262,7 +266,7 @@ public class AdminControl {
 		u.setId(Integer.parseInt(req.getParameter("userid")));
 		u.setUsername(req.getParameter("username"));
 		u.setLevel(Integer.parseInt(req.getParameter("userlevel")));
-		
+
 		UserInfo info=new UserInfo();
 		info.setUsername(req.getParameter("name"));
 		info.setSex(req.getParameter("sex"));
@@ -271,6 +275,11 @@ public class AdminControl {
 		info.setSalary(Double.parseDouble(req.getParameter("salary")));
 		info.setId(Integer.parseInt(req.getParameter("infoId")));
 		try {
+			/*
+			 *有缺陷，多条数据提交出现异常，无法事务回滚 
+			 *初始设计表有缺陷，
+			 *目前比较理想的设计方案：设计一张大表，并将之分成两个view，查询时查view,更新插入table
+			 * */
 			info.setHiredate(df.parse(req.getParameter("brithday")));
 			info.setHiredate(df.parse(req.getParameter("hiredate")));
 		} catch (ParseException e1) {
@@ -293,6 +302,67 @@ public class AdminControl {
 		}
 	}
 
+	@RequestMapping("/update/ManagerRegist")
+	public void updateRegist_M(HttpServletRequest req,HttpServletResponse res){
+		String message="";
+		DateFormat df=new SimpleDateFormat("yyyy-mm-dd");
+		String username=req.getParameter("nkname");
+		String psw=ServiceTool.OnSecreatKey(req.getParameter("psw")==null?"1":req.getParameter("psw"));
+		int level=Integer.parseInt(req.getParameter("level"));
+		String email=req.getParameter("email");
+		String name=req.getParameter("name");
+		String sex=req.getParameter("sex");
+		String department=req.getParameter("department");
+		String salary=req.getParameter("salary");
+		String brithday=req.getParameter("brithday");
+		String hiredate=req.getParameter("hiredate");
+		UserInfo info=new UserInfo();
+		info.setUsername(name);
+		info.setEmail(email);
+		info.setSalary(Double.parseDouble(salary));
+		info.setDepartment(department);
+		info.setSex(sex);
+		try {
+			info.setBrithday(df.parse(brithday));
+			info.setHiredate(df.parse(hiredate));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int i=0;
+		UserInfo infos=mapperUserInfo.selectByUserInfo(info);
+		if(infos==null){
+			if(mapperUserInfo.insert(info)>0){
+				User u=new User();
+				u.setLevel(level);
+				u.setUsername(username);
+				u.setPassword(psw);
+				System.out.println(mapperUserInfo.selectByUserInfo(info));
+				i=mapperUserInfo.selectByUserInfo(info).getId();
+				u.setUserinfoid(i);
+				if(mapperUser.insert(u)>0){
+					message="success";
+				}else{
+					mapperUserInfo.deleteByPrimaryKey(i);
+					message="error_insert_user";
+				}
+			}else{
+				message="error_insert_userinfo";
+			}
+		}else{
+			message="error_user_ishave";
+		}
+		System.out.println(message);
+		res.setCharacterEncoding("UTF-8");
+		try {
+			res.getWriter().write(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+
 	/**
 	 * 获取查询的用户的列表信息
 	 * @return 
@@ -302,13 +372,13 @@ public class AdminControl {
 		for(User u:u_list){
 			Map<String, Object> map=new HashMap<>();
 			map.put("u", u);
-//			System.out.println(mapperUserInfo.selectByPrimaryKey(u.getUserinfoid()));
+			//			System.out.println(mapperUserInfo.selectByPrimaryKey(u.getUserinfoid()));
 			map.put("l",transToUserInfoMap(mapperUserInfo.selectByPrimaryKey(u.getUserinfoid())==null?new UserInfo():mapperUserInfo.selectByPrimaryKey(u.getUserinfoid())));
 			list.add(map);
 		}
 		return list;
 	}
-	
+
 	/**
 	 * 解析userinfo对象的时间格式数据
 	 * */
@@ -324,7 +394,7 @@ public class AdminControl {
 		map.put("hiredate", userInfo.getHiredate()==null? "": df.format(userInfo.getHiredate()));
 		map.put("salary", userInfo.getSalary()==null? "": userInfo.getSalary());
 		return map;
-		
+
 	}
 
 	private Picture transToPicture(Map<String, String> map) {
