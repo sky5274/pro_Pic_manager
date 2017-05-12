@@ -10,4 +10,6 @@ public interface ThemeInfoMapper {
     int insertSelective(ThemeInfo record);
     
     List<ThemeInfo> selectInfo();
+    
+    List<ThemeInfo> selectRangByTheme(String theme);
 }

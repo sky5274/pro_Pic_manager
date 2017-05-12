@@ -13,12 +13,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.fastjson.JSON;
 import com.dao.entity.PageInfo;
 import com.dao.entity.Picture;
+import com.dao.entity.ThemeInfo;
 import com.dao.impl.PictureMapper;
+import com.dao.impl.ThemeInfoMapper;
 
 
 public class DaoService {
 	@Autowired
 	private PictureMapper service;
+	@Autowired
+	private ThemeInfoMapper themeMapper;
 
 	public  PictureMapper getService() {
 		return service;
@@ -93,11 +97,11 @@ public class DaoService {
 	/**
 	 * 获取10个提示
 	 * */
-	public List<Picture> doSearchTheme(String theme){
-		List<Picture> list = service.selectRangByTheme(theme);
+	public List<ThemeInfo> doSearchTheme(String theme){
+		List<ThemeInfo> list =themeMapper.selectRangByTheme(theme);
 		if(list.size()<11){
-			List<Picture> list_o = service.selectRangByTheme(theme);
-			for(Picture p:list_o){
+			List<ThemeInfo> list_o = themeMapper.selectRangByTheme("%"+theme);
+			for(ThemeInfo p:list_o){
 				list.add(p);
 			}
 		}
@@ -179,9 +183,9 @@ public class DaoService {
 	/**
 	 * 提取图片的theme信息并封装
 	 * */
-	private List<Map<String, String>>  transToSimTheme(List<Picture> list){
+	private List<Map<String, String>>  transToSimTheme(List<ThemeInfo> list){
 		List<Map<String, String>> cons=new ArrayList<>();
-		for(Picture p:list){
+		for(ThemeInfo p:list){
 			Map<String, String>map=new HashMap<>();
 			map.put("hint",p.getTheme().length()>7? p.getTheme().substring(0, 6):p.getTheme());
 			cons.add(map);

@@ -32,7 +32,7 @@ public class test2 {
 	public void testAdminquery2(){
 		ApplicationContext con=new ClassPathXmlApplicationContext("config/ApplicaiotnContext.xml");
 		ThemeInfoMapper mapper=con.getBean(ThemeInfoMapper.class);
-		List<ThemeInfo> list = mapper.selectInfo();
+		List<ThemeInfo> list = mapper.selectRangByTheme("风%");
 		for(ThemeInfo c:list){
 			System.out.println(c);
 		}

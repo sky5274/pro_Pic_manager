@@ -11,6 +11,12 @@
    	sum, theme, clazz
     from themeinfo order by clazz
   </select>
+   <select id="selectRangByTheme"  resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+   	sum, theme, clazz
+    from themeinfo 
+    where theme like #{theme,jdbcType=VARCHAR}
+  </select>
   <insert id="insert" parameterType="com.dao.entity.ThemeInfo" >
     insert into themeinfo (sum, theme, clazz
       )
