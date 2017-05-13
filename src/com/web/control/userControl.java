@@ -31,7 +31,7 @@ public class userControl {
 	}
 	
 	/**
-	 * 登录成功，转向message。jsp页面
+	 * 登录成功，转向message.jsp页面
 	 * */
 	@RequestMapping("/logoin")
 	public String doLogoin(String name,String psw){
@@ -39,7 +39,7 @@ public class userControl {
 	}
 	
 	/**
-	 * 登录转向，转向logoin。jsp 登录页面
+	 * 登录转向，转向logoin.jsp 登录页面
 	 * */
 	@RequestMapping("/logo")
 	public String getLogo(){
@@ -47,7 +47,7 @@ public class userControl {
 	}
 	
 	/**
-	 * 用户激活，后转向message。jsp页面
+	 * 用户激活，后转向message.jsp页面
 	 * */
 	@RequestMapping("/doaction")
 	public String doAction(HttpServletRequest req,HttpServletResponse res){
@@ -63,6 +63,9 @@ public class userControl {
 			}
 	}
 	
+	/**
+	 * 重置用户时用户的信息验证
+	 * */
 	@RequestMapping("/doValiteUser")
 	public void doValiteUser(HttpServletResponse res,HttpServletRequest req){
 		String name=req.getParameter("name");
@@ -112,7 +115,7 @@ public class userControl {
 	}
 	
 	/**
-	 * 注册成功，转向message。jsp页面
+	 * 注册成功，转向message.jsp页面
 	 * */
 	@RequestMapping("/getRegister")
 	public String doRegist(HttpServletRequest req,HttpServletResponse res){
@@ -120,7 +123,7 @@ public class userControl {
 	}
 	
 	/**
-	 * 登录成功，转向message。jsp页面
+	 * 注册前检验用户昵称是否重复
 	 * */
 	@RequestMapping("/valiteName")
 	public void valiteUserNameIsSame(HttpServletRequest req,HttpServletResponse res){

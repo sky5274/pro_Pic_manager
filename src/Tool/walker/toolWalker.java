@@ -28,7 +28,7 @@ public class toolWalker {
 		StringBuffer context=new StringBuffer();
 		try {
 			URL u=new URL(url);
-			BufferedReader read=new BufferedReader(new InputStreamReader(u.openStream()));
+			BufferedReader read=new BufferedReader(new InputStreamReader(u.openStream(),"UTF-8"));
 			String line;
 			while((line=read.readLine())!=null){
 				context.append(line);
@@ -202,38 +202,43 @@ public class toolWalker {
 	}
 
 	/**
-	 * 转换成节点
+	 * 转换成节点,设置属性，子节点，innerhtml等
 	 * */
 	public static node transToNodes(String con) {
+		//		System.out.println("node:"+con);
 		node n=new node();
 		int ele_s=con.lastIndexOf("</");
-		int ele_e=con.indexOf(">",ele_s);
+		int ele_e=con.indexOf(">",ele_s);  //元素标签尾结尾索引
 		if(ele_s>=0&&ele_e>ele_s){
 			String ele=con.substring(ele_s+2,ele_e);
 			n.setElement(ele);
-			//int ele_i=con.indexOf("ele");
-			int head_s=con.indexOf("<");
-			int head_e=con.indexOf(">");
-			List<String> list=transAttrToLIst(con.substring(head_s, head_e+1).split("="));
+			int head_s=con.indexOf("<");//元素标签头索引
+			int head_e=con.indexOf(">",head_s);//元素标签头结尾索引
+			//System.out.println(con.substring(head_s, head_e+1));
+			List<String> list=transAttrToLIst(con.substring(head_s, head_e+1).split("=\""));  //元素属性的集合
 			Map<String, String[]> attr=new HashMap<>();
-			for(int i=0;i<list.size();i+=2){
-				if(list.get(i)=="class"){
+			
+			for(int i=0;i<list.size()-1;i+=2){
+				//System.out.println(list.get(i).trim());
+				//System.out.println(list.get(i+1).trim());
+				if(list.get(i).trim().equals("class")){
 					attr.put("class", list.get(i+1).split(" "));
 					n.setClasses(list.get(i+1).split(" "));
-				}else if(list.get(i)=="id"){
+				}else if(list.get(i).trim().equals("id")){
 					attr.put("id", list.get(i+1).split(" "));
 					n.setId(list.get(i+1));
 				}else{
-					attr.put(list.get(i), list.get(i+1).split(" "));
-					
+					attr.put(list.get(i).trim(), list.get(i+1).split(" "));
 				}
 
 			}
 			n.setAttr(attr);
-//			System.out.println("inner:"+con.substring(head_e+1, ele_s));
-			if(head_s>=0 &&ele_s>=0){
+
+			if(head_s>=0 &&ele_s>=0&&ele_s>(head_s+1)){
+				//				System.out.println("inner:"+head_e+"======="+ele_s);
+				//				System.out.println("inner:"+con.substring(head_e+1, ele_s));
 				n.setInnerHTML(con.substring(head_e+1, ele_s).trim());
-				n.setChildNode(getChildNode(con.substring(head_e+1, ele_s).trim()));   //设置子节点
+				n.setChildNode(getChildNode(con.substring(head_e, ele_s).trim()));   //设置子节点
 			}
 			n.setContext(con);
 			return n;
@@ -317,15 +322,18 @@ public class toolWalker {
 	 * */
 	private static List<String> transAttrToLIst(String[] cs){
 		List<String> list=new ArrayList<String>();
-		if(cs.length>2){
+		if(cs.length>=2){
 			for(int i=0;i<cs.length;i++){
 				if(i==0){
-					list.add(cs[i].split(" ")[1]);
+					//System.out.println(cs[i].split(" ").length);
+					list.add(cs[i].split(" ")[cs[i].split(" ").length-1].trim());
 				}else if(i==cs.length-1){
-					list.add(cs[i].split("\"")[0]);
+					list.add(cs[i].split("\"")[0].trim());
 				}else{
-					list.add(cs[i].split("\"")[0]);
-					list.add(cs[i].split("\"")[1].trim());
+					String[] s=cs[i].split("\"");
+					for(String l:s){
+						list.add(l.trim());
+					}
 				}
 			}
 		}
