@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/header::head('设置','','')"></head>
+<style type="text/css">
+.need_inp{border: 1px solid red;}
+#menu-add span{width:10%;padding: 0 1%}
+#menu-add input{width:90%;padding: 0 1%}
+</style>
+<script type="text/javascript">
+	$(function(){
+		$("#menu-submit").on("click",function(){
+			var obj=$.valid({ele:"#menu-add"})
+			if(obj){
+				$.doAjax({
+					url:API.page.menu.add,
+					data:obj,
+					success:function(res,status){
+						console.log(res);
+						console.log(status)
+					}
+				})
+			}
+		})
+	})
+</script>
+<body>
+	<div class="panel panel-default">
+		<div class="panel-heading">添加菜单 </div>
+		<div id="page-contain" class="panel-body">
+			<div id="menu-add">
+				<div class="clearfix"><span class="pull-left">编码</span>	<input  type="text" name="code" class="form-control pull-left" placeholder="编码"/></div>
+				<div class="clearfix"><span class="pull-left">菜单名称</span>	<input  type="text" name="name" class="form-control pull-left" placeholder="菜单名称"/></div>
+				<div class="clearfix"><span class="pull-left">路径</span>	<input type="text" name="url" class="form-control pull-left" placeholder="路径"/></div>
+				<div class="clearfix"><span class="pull-left">上级菜单</span></div>
+				<div class="clearfix"><button class="btn-primary" id="menu-submit">提交</button></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

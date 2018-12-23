@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+</head>
+<body>
+	<div th:fragment="menu">
+		<ul class="list-group">
+			<li th:attr="class=list-group-item">主目录</li>
+			<li th:each="item,stats:${menu}" th:attr="class=|list-group-item menu-item|"><a th:attr="url=@{${item.url}},class=primary,code=${item.code}" th:text="${item.name}"></a></li>
+		</ul>
+	</div>
+</body>
+</html>
