@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.crawl.config.service.MenuService;
 import com.crawl.data.config.dao.entity.MenuEntity;
+import com.crawl.data.config.dao.entity.MenuNode;
+import com.crawl.pub.BasePageRequest;
+import com.crawl.pub.Page;
 import com.crawl.pub.Result;
 import com.crawl.pub.ResultCode;
 import com.crawl.pub.ResultUtil;
@@ -24,9 +27,17 @@ public class MenuController {
 	@Resource
 	private MenuService menuSerive;
 	
+	@RequestMapping("page")
+	public Result<Page<MenuEntity>> getMenuPage(BasePageRequest page){
+		return ResultUtil.getOk(ResultCode.OK, menuSerive.getMenuPage(page));
+	}
 	@RequestMapping("list")
 	public Result<List<MenuEntity>> getMenuList(){
 		return ResultUtil.getOk(ResultCode.OK, menuSerive.getMenuList());
+	}
+	@RequestMapping("node")
+	public Result<List<MenuNode>> getMenuNode(){
+		return ResultUtil.getOk(ResultCode.OK, menuSerive.getMenuNode());
 	}
 	@RequestMapping("add")
 	public Result<Boolean> addMneu(MenuEntity menu){

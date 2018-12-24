@@ -24,6 +24,15 @@
     <include refid="Base_Column_List" />
     from menu
   </select>
+  <select id="accountQuery" resultType="java.lang.Integer">
+    select     count(1)    from menu
+  </select>
+  <select id="queryPage" resultMap="BaseResultMap" parameterType="com.crawl.pub.BasePageRequest">
+    select 
+    <include refid="Base_Column_List" />
+    from menu
+    limit #{current},#{pageSize}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from menu
     where id = #{id,jdbcType=INTEGER}

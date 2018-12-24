@@ -3,6 +3,7 @@
 <head th:replace="common/header::head('配置主页','/css/config/main.css','/js/config/main.js')"></head>
 <script type="text/javascript">
 	$(function(){
+		initMneuPage();
 			$(".menu-item").on("click",function(){
 				var url=$(this).children().attr("url");
 				if(url!=undefined ){

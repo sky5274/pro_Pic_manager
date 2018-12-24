@@ -119,8 +119,59 @@
 
 	function doJsonAjax(obj){
 		obj.dataType='json'
-		doAjax(obj)
+			doAjax(obj)
 	}
+	function jTable(tar,obj){
+		var param ={
+				method: 'get',
+			    url: "",
+				cache: false,
+				striped: true,
+				dataField: "list",
+				pagination: true,
+				pageNumber: 1,
+				sidePagination: 'server',
+				queryParams :function(param){
+					if(obj.param){
+						param=$.extend(param,obj.param())
+					}
+					param.current=param.offset;
+					param.pageSize=param.limit;
+					return param;
+				},
+				responseHandler:function(res){
+					if(res.success && res.data){
+						return res.data;
+					}else{
+						$.alert({type:"warn",content:"请求数据返回错误"})
+					}
+				},
+				pageSize: 10,
+				pageList: [10, 25, 50, 100, 200],
+				search: false,
+				showColumns: true,
+				showRefresh: true,
+				minimumCountColumns: 2,
+				clickToSelect: true,
+				onLoadError:function(){
+					if(obj.error){
+						obj.error()
+					}else{
+						$.alert({type:"warn",content:"请求数据失败"})
+					}
+				}
+				}
+		param=$.extend(param,obj)
+		$(tar).bootstrapTable(param)
+	}
+	$.fn.extend({
+		jTable:function(param){
+			return new jTable($(this),param)
+		},
+		jmTable:function(method,param){
+			return $(this).bootstrapTable(method,param)
+		},
+	})
 	$.extend({
 		doAjax:doAjax,
 		doJsonAjax:doJsonAjax,

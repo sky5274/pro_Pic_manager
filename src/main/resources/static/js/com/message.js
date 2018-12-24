@@ -44,10 +44,9 @@
 		case "confrim":
 			var dialog=$(this.getModal(id,1));
 			this.parent.append(dialog);
-			console.log(dialog)
 			
 			//页面初始化事件
-			this.settings.init();
+			this.settings.init(dialog);
 			this.parent.find("#"+id).modal('toggle')
 			var _this=this;
 			$(dialog).find("button[type=button]").click(function(){
@@ -55,6 +54,7 @@
 				try {
 					flag=_this.settings.func($(this).data("type"),dialog)
 				} catch (e) {
+					console.error(e)
 					throw 'dialog err'
 				}
 				flag=flag==undefined?true:flag
@@ -294,7 +294,7 @@
 			if(group.length==0){
 				group=$("<div class='alert-group'></div>")
 				this.parent.append(group)
-				group.css({"position":"absolute","width":"100%","top":"0px","left":'1px'})
+				group.css({"position":"absolute","width":"100%","top":"0px","left":'1px',"z-index":100000})
 			}
 			group.append(html);
 			this.settings.init(html);
@@ -342,11 +342,11 @@
 			var flag=true;
 			$(param.ele).find(".need_inp").removeClass("need_inp")
 			$(param.ele).find(param.tar==undefined?"input":param.tar).each(function(i,ele){
-				if($(ele).val()!=""){
+				if($(ele).val()!="" || (param.ext && $.inArray(param.ext,$(ele).attr("name"))>-1)){
 					obj[$(ele).attr("name")]=$(ele).val()
 				}else{
 					$(ele).parent().addClass("need_inp")
-					$.alert({content:$(ele).attr("name")+"不能为空",type:"warn"})
+					$.alert({content:$(ele).parent().text()+"不能为空",type:"warn"})
 					flag=false
 				}
 			})

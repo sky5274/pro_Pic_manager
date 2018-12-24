@@ -1,4 +1,6 @@
 function addModel(ele,tar){
+	var tab_url=$(ele).attr("url")
+	if(tab_url!="#" && tab_url !=""){
 		var code=$(ele).attr("code")
 		var tabId="tab_"+code;
 		var tab=$(tar.tab).find("#"+tabId)
@@ -15,6 +17,7 @@ function addModel(ele,tar){
 			$(tar.content).find("#con_"+code).addClass("active")
 			tab.addClass("active");
 		}
+	}
 }
 
 function delTab(ele){
@@ -30,5 +33,31 @@ function delTab(ele){
 			parent.find(item.find('a').attr("href")).addClass("active")
 		}
 	}
-	
+}
+
+function initMneuPage(){
+	$("#menu-group-list").on("click","li",function(ele){
+		var pre=$(this).parents("li").find(".glyphicon-chevron-down");
+		if(pre.length>0){
+			return false;
+		}
+		var tap=$(this).children("a");
+		var tab_url=$(tap).attr("url")
+		if(tab_url=="#" || tab_url ==""){
+			var tab_flag=$(tap).children("span.glyphicon");
+			var list_g=$(this).children(".list-group")
+			if(tab_flag.length>0 && list_g.length>0){
+				var isClose=tab_flag.attr("class").indexOf("glyphicon-chevron-right")>-1;
+				if(isClose){
+					list_g.removeClass("hidden").fadeIn()
+					$(tap).children("i.glyphicon").addClass("glyphicon-minus").removeClass("glyphicon-plus")
+					tab_flag.addClass("glyphicon-chevron-down").removeClass("glyphicon-chevron-right")
+				}else{
+					$(this).find(".list-group").fadeOut().addClass("hidden")
+					$(this).find("i.glyphicon").addClass("glyphicon-plus").removeClass("glyphicon-minus")
+					$(this).find("span.glyphicon").addClass("glyphicon-chevron-right").removeClass("glyphicon-chevron-down")
+				}
+			}
+		}
+	})
 }

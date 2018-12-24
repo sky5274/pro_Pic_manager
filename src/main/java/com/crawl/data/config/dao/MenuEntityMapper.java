@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.crawl.data.config.dao.entity.MenuEntity;
+import com.crawl.pub.BasePageRequest;
 
 @Mapper
 public interface MenuEntityMapper {
@@ -16,6 +17,8 @@ public interface MenuEntityMapper {
 
     MenuEntity selectByPrimaryKey(Integer id);
     List<MenuEntity> queryAll();
+    List<MenuEntity> queryPage(BasePageRequest page);
+    int accountQuery();
 
     int updateByPrimaryKeySelective(MenuEntity record);
 

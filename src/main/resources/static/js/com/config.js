@@ -8,7 +8,10 @@ var API= {
 			},
 			page:{
 				menu:{
-					add:"/menu/add"
+					add:"/menu/add",
+					list:"/menu/list",
+					node:"/menu/node",
+					page:"/menu/page"
 				}
 			}
 		}

@@ -19,7 +19,7 @@ public class ConfigController {
 	
 	@RequestMapping("main")
 	public String goConfigMainPage(Model mod) {
-		mod.addAttribute("menu", menuService.getMenuList());
+		mod.addAttribute("menu", menuService.getMenuNode());
 		return "/config/main";
 	}
 	@RequestMapping("setting")
